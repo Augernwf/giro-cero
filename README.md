@@ -68,7 +68,7 @@ Activar **Enforce HTTPS** cuando GitHub habilite la opción después de validar 
 
 ## Cambios DNS que debe realizar el titular en STRATO
 
-**No se ha modificado ningún DNS. Mantener los servidores de nombres de STRATO y todos los registros de correo.** Esta ruta no requiere delegar el dominio a Cloudflare.
+**Mantener los servidores de nombres de STRATO y todos los registros de correo.** Los cambios web indicados abajo ya se han aplicado; el TXT de verificación se restauró como registro independiente del CNAME de `www`. Esta ruta no requiere delegar el dominio a Cloudflare.
 
 Consulta pública previa, 8 de octubre de 2026 (no sustituye al inventario completo del panel):
 
@@ -107,7 +107,7 @@ Añadir un registro adicional, sin sustituir ningún TXT existente:
 | --- | --- | --- | --- |
 | TXT | _github-pages-challenge-Augernwf | b7849179660b33404a517308134842 | 3600 s o predeterminado |
 
-Nombre completo: `_github-pages-challenge-Augernwf.girocero.es`. El dominio está pendiente de verificación en la cuenta Augernwf. Tras propagar el TXT, completar Verify en https://github.com/settings/pages_verified_domains/girocero.es y conservar el registro. Es independiente de SPF, DKIM y DMARC. [Verificación de propiedad de GitHub Pages](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages).
+Nombre completo: `_github-pages-challenge-Augernwf.girocero.es`. El dominio ya está verificado en la cuenta Augernwf. Conservar este TXT para mantener la verificación. El 8 de octubre de 2026 se confirmó su presencia en ambos servidores autoritativos de STRATO. Es independiente de SPF, DKIM y DMARC. [Verificación de propiedad de GitHub Pages](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages).
 
 ## Comprobación posterior a DNS
 
@@ -140,4 +140,6 @@ El correo requiere dos comprobaciones diferentes: conservar los DNS y probar la 
 
 Repositorio creado: https://github.com/Augernwf/giro-cero. GitHub Pages configurado con GitHub Actions. Primer deployment validado antes de asociar el dominio: https://github.com/Augernwf/giro-cero/actions/runs/37831759512 (Success, 8 de octubre de 2026). La URL inicial devolvió 200 para HTML, CSS, JavaScript, todas las imágenes, robots y sitemap, y 404 para una ruta inexistente. Selector EN/ES verificado en navegador y recursos visibles cargados.
 
-Custom domain `girocero.es` guardado en GitHub. `dist/CNAME` añadido como referencia. Verificación de propiedad preparada. Pendiente: el titular cambia exclusivamente los DNS web y añade el TXT indicado en STRATO; después se comprueban DNS, certificado, HTTPS, redirecciones y continuidad del correo. No se ha cambiado ningún DNS ni se han enviado mensajes. Tras asociar el dominio, la URL github.io puede redirigir al dominio final incluso antes de que el DNS esté listo.
+Custom domain `girocero.es` guardado en GitHub y propiedad verificada en Augernwf. `dist/CNAME` añadido como referencia. DNS web comprobados: A `185.199.108.153`, AAAA `2606:50c0:8000::153` y CNAME `www` → `augernwf.github.io`. El TXT de propiedad se restauró en STRATO con «Crear otro registro», conservando el CNAME, DMARC y las opciones SPF existentes. MX sigue en `smtp.rzone.de`, prioridad 5, y DMARC sigue en `v=DMARC1;p=reject;`.
+
+Enforce HTTPS activado. `https://girocero.es/` devuelve 200 con certificado válido; robots y sitemap devuelven 200, y una ruta inexistente devuelve 404. GitHub muestra el certificado en aprovisionamiento (paso 2 de 3). Pendiente: completar el certificado de `www`, confirmar DNS check successful y volver a comprobar las redirecciones HTTP/`www` cuando terminen de actualizarse las cachés. Todavía no se considera terminado el lanzamiento. La continuidad real del buzón requiere una prueba de envío y recepción por el titular; no se han enviado mensajes.
