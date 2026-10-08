@@ -20,7 +20,7 @@ scripts/serve.cjs              Vista previa local con Node.js
    robots.txt
    sitemap.xml
    .nojekyll
-   CNAME                      Se añade al activar el dominio personalizado
+   CNAME                      Dominio de producción (referencia)
    assets/
      favicon.svg
      character-study.webp
@@ -103,6 +103,16 @@ Preservar **MX, SPF, DKIM, DMARC**, así como registros de validación y los hos
 
 Los valores web se contrastaron con [la tabla oficial de DNS de GitHub Pages](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site). La gestión del panel se describe en [la documentación DNS de STRATO](https://www.strato.es/faq/dominios/que-registros-DNS-ofrece-STRATO-y-como-puedo-gestionarlos/).
 
+### TXT de propiedad generado por GitHub
+
+Añadir un registro adicional, sin sustituir ningún TXT existente:
+
+| Tipo | Host/nombre | Valor | TTL |
+| --- | --- | --- | --- |
+| TXT | _github-pages-challenge-Augernwf | b7849179660b33404a517308134842 | 3600 s o predeterminado |
+
+Nombre completo: `_github-pages-challenge-Augernwf.girocero.es`. El dominio está pendiente de verificación en la cuenta Augernwf. Tras propagar el TXT, completar Verify en https://github.com/settings/pages_verified_domains/girocero.es y conservar el registro. Es independiente de SPF, DKIM y DMARC. [Verificación de propiedad de GitHub Pages](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages).
+
 ## Comprobación posterior a DNS
 
 Comprobar que GitHub muestra **DNS check successful** en Settings → Pages. Activar Enforce HTTPS cuando esté disponible. Si aparece una restricción CAA, revisar primero los CAA existentes; no borrarlos indiscriminadamente. GitHub utiliza Let's Encrypt para emitir los certificados.
@@ -132,5 +142,7 @@ El correo requiere dos comprobaciones diferentes: conservar los DNS y probar la 
 
 ## Estado de esta preparación
 
-Archivos de producción y workflow preparados. La publicación remota, la validación inicial, la asociación del dominio y la emisión del certificado deben verificarse con resultados reales y registrarse al completar cada fase. El cambio DNS corresponde al titular y debe realizarse después de confirmar el deployment inicial.
+Repositorio creado: https://github.com/Augernwf/giro-cero. GitHub Pages configurado con GitHub Actions. Primer deployment validado antes de asociar el dominio: https://github.com/Augernwf/giro-cero/actions/runs/37831759512 (Success, 8 de octubre de 2026). La URL inicial devolvió 200 para HTML, CSS, JavaScript, todas las imágenes, robots y sitemap, y 404 para una ruta inexistente. Selector EN/ES verificado en navegador y recursos visibles cargados.
+
+Custom domain `girocero.es` guardado en GitHub. `dist/CNAME` añadido como referencia. Verificación de propiedad preparada. Pendiente: el titular cambia exclusivamente los DNS web y añade el TXT indicado en STRATO; después se comprueban DNS, certificado, HTTPS, redirecciones y continuidad del correo. No se ha cambiado ningún DNS ni se han enviado mensajes. Tras asociar el dominio, la URL github.io puede redirigir al dominio final incluso antes de que el DNS esté listo.
 
