@@ -76,28 +76,24 @@ Consulta pública previa, 8 de octubre de 2026 (no sustituye al inventario compl
 | --- | --- | --- | --- |
 | NS | girocero.es | shades11.rzone.de | Conservar |
 | NS | girocero.es | docks04.rzone.de | Conservar |
-| A | @ | 217.160.0.75 | Sustituir por los cuatro A de GitHub indicados abajo |
-| AAAA | @ | 2001:8d8:100f:f000::200 | Sustituir por los cuatro AAAA de GitHub indicados abajo |
+| A | @ | 217.160.0.75 | Sustituir por 185.199.108.153 |
+| AAAA | @ | 2001:8d8:100f:f000::200 | Sustituir por 2606:50c0:8000::153, o eliminar este AAAA web si se usa solo IPv4 |
 | CNAME | www | girocero.es | Sustituir por Augernwf.github.io |
 | MX | @ | smtp.rzone.de, prioridad 5 | Conservar sin cambios |
 
-Estado final esperado **solo para la web**:
+Configuración compatible con el panel de STRATO que admite una sola IP por tipo, **solo para la web**:
 
 | Tipo | Host/nombre | Valor/destino | TTL |
 | --- | --- | --- | --- |
 | A | @ | 185.199.108.153 | 3600 s o predeterminado |
-| A | @ | 185.199.109.153 | 3600 s o predeterminado |
-| A | @ | 185.199.110.153 | 3600 s o predeterminado |
-| A | @ | 185.199.111.153 | 3600 s o predeterminado |
 | AAAA | @ | 2606:50c0:8000::153 | 3600 s o predeterminado |
-| AAAA | @ | 2606:50c0:8001::153 | 3600 s o predeterminado |
-| AAAA | @ | 2606:50c0:8002::153 | 3600 s o predeterminado |
-| AAAA | @ | 2606:50c0:8003::153 | 3600 s o predeterminado |
 | CNAME | www | Augernwf.github.io. | 3600 s o predeterminado |
 
 `@` significa el dominio principal; si STRATO muestra el dominio directamente, editar ese registro. El punto final del CNAME indica un nombre absoluto; si el formulario lo añade automáticamente, escribir `Augernwf.github.io`. No añadir `/giro-cero`, protocolo ni una IP en el CNAME. No crear CNAME en el dominio raíz ni comodines `*`.
 
-En STRATO: Dominios → Administrar dominios → girocero.es → DNS. Sustituir exclusivamente los A/AAAA web antiguos del dominio principal. En el subdominio `www`, sustituir el CNAME anterior; si existen A/AAAA propios de `www`, retirarlos al establecer el CNAME. No tocar otros subdominios. Si el panel limita el número de A/AAAA, solicitar a STRATO que configure el conjunto indicado. Como alternativa IPv4, los cuatro A bastan si se elimina el AAAA web antiguo; nunca dejar IPv6 apuntando al alojamiento anterior.
+En STRATO: Dominios → Administrar dominios → girocero.es → DNS. En Registro A, elegir IP propia e introducir únicamente `185.199.108.153`. GitHub permite configurar el dominio raíz con al menos un registro A; no introducir varias IP separadas por comas o espacios en un campo. La tabla oficial ofrece cuatro direcciones por tipo, pero no hace falta que STRATO admita todas para conectar la web. En Registro AAAA, sustituir la dirección antigua por `2606:50c0:8000::153`; IPv6 es opcional, por lo que también se puede eliminar exclusivamente el AAAA web antiguo si se usa solo IPv4. Nunca dejar IPv6 apuntando al alojamiento anterior.
+
+En el subdominio `www`, sustituir el CNAME anterior por `Augernwf.github.io`; si existen A/AAAA propios de `www`, retirarlos al establecer el CNAME. No tocar otros subdominios ni registros de correo.
 
 Preservar **MX, SPF, DKIM, DMARC**, así como registros de validación y los hosts de correo/autodiscover. No sustituir el MX observado por un ejemplo genérico del proveedor. Guardar una copia de la zona antes de editar; comprobar todos los registros del panel, ya que una consulta pública no enumera la zona completa. Si algún servicio de correo apunta al propio `girocero.es` como servidor, avisar antes de cambiar A/AAAA; el MX observado utiliza el host externo `smtp.rzone.de`.
 
@@ -145,4 +141,3 @@ El correo requiere dos comprobaciones diferentes: conservar los DNS y probar la 
 Repositorio creado: https://github.com/Augernwf/giro-cero. GitHub Pages configurado con GitHub Actions. Primer deployment validado antes de asociar el dominio: https://github.com/Augernwf/giro-cero/actions/runs/37831759512 (Success, 8 de octubre de 2026). La URL inicial devolvió 200 para HTML, CSS, JavaScript, todas las imágenes, robots y sitemap, y 404 para una ruta inexistente. Selector EN/ES verificado en navegador y recursos visibles cargados.
 
 Custom domain `girocero.es` guardado en GitHub. `dist/CNAME` añadido como referencia. Verificación de propiedad preparada. Pendiente: el titular cambia exclusivamente los DNS web y añade el TXT indicado en STRATO; después se comprueban DNS, certificado, HTTPS, redirecciones y continuidad del correo. No se ha cambiado ningún DNS ni se han enviado mensajes. Tras asociar el dominio, la URL github.io puede redirigir al dominio final incluso antes de que el DNS esté listo.
-
